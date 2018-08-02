@@ -3,7 +3,9 @@ let editButton=document.getElementById('editMessageButton'),
 	personalDataArea=document.getElementById('personalDataArea'),
 	returnMainButton=document.getElementById('returnMainButton'),
 	fixedTool=document.getElementById('fixedTool'),
-	userJson;
+	userJson,
+	xhrUrl='http://202.116.162.57:8080',
+	loginAttentionList;
 editButton.onclick=disappear;
 returnMainButton.onclick=disappear;
 /*切换信息区域*/
@@ -22,7 +24,7 @@ function uploadFiles(){
 		let uploadFile = new FormData(document.getElementById("file"));
 		if("undefined" != typeof(uploadFile) && uploadFile != null && uploadFile != ""){
 		let	xhr=new XMLHttpRequest();
-			xhr.open('post','http://202.116.162.57:8080/se52/userimg.do',true);
+			xhr.open('post',xhrUrl+'/se52/userimg.do',true);
 			xhr.send(uploadFile);
 			xhr.onreadystatechange=function(){
 				if(xhr.readyState==4){
@@ -50,7 +52,7 @@ function coolAlert(str){
 function getUserMessage(){
 	let user_id=window.location.href.split('?')[1].split('#')[0],
 		 xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/user/check.do',true);
+	xhr.open('post',xhrUrl+'/se52/user/check.do',true);
 	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xhr.send("id="+user_id);
 	xhr.onreadystatechange=function(){
@@ -86,7 +88,7 @@ function updateUser(key,value){
 	}
 	if(userJson){
 		let xhr=new XMLHttpRequest;
-			xhr.open('post',"http://202.116.162.57:8080/se52/user/modify.do",true);
+			xhr.open('post',xhrUrl+'/se52/user/modify.do',true);
 			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 			xhr.send(str);
 			xhr.onreadystatechange=function(){
@@ -110,12 +112,12 @@ function updateUser(key,value){
 }
 /*改变图片显示*/
 function changePhoto(url){
-	document.getElementById("userPhoto").src="http://202.116.162.57:8080"+url;
+	document.getElementById("userPhoto").src=xhrUrl+url;
 	if(!localStorage.nowUserId){
 		document.getElementById("navItemUser").classList.add('disappear');
 		document.getElementById("navLoginButton").classList.remove('disappear');
 	}
-	document.getElementById("personalUserPhoto").src="http://202.116.162.57:8080"+url;
+	document.getElementById("personalUserPhoto").src=xhrUrl+url;
 }
 function changeName(str){
 	document.getElementById('personalName').innerText=str;
@@ -175,7 +177,7 @@ fixedTool.addEventListener('click',function(e){
 /*公告部分*/
 function getNewAnnouncement(){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/note/findByType.do',true);
+	xhr.open('post',xhrUrl+'/se52/note/findByType.do',true);
 	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	xhr.send('type=announcement');
 	xhr.onreadystatechange=function(){
@@ -190,7 +192,7 @@ function getNewAnnouncement(){
 }
 function getAnnouncementContent(note_id,title){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/viewNote.do',true);
+	xhr.open('post',xhrUrl+'/se52/viewNote.do',true);
 	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xhr.send('noteId='+note_id);
 	xhr.onreadystatechange=function(){
@@ -218,6 +220,110 @@ function sendMessage(){
 	console.log('ok');
 }
 
+/*关注用户*/
+function getAttentionList(){/*查看用户的关注列表*/
+	let xhr=new XMLHttpRequest(),
+	    user_id=window.location.href.split('?')[1];
+	xhr.open('post',xhrUrl+'/se52/showSubscribe.do',true);
+	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+	xhr.send('user_id='+user_id);
+	xhr.onreadystatechange=function(){
+		if(xhr.readyState==4){
+			if(xhr.status==200){
+				showAttentionList(JSON.parse(xhr.responseText)['userlist']);
+			}
+		}
+	}
+}
+
+/*获得登陆者关注列表*/
+function getAttentionOfLogin(){
+	let xhr=new XMLHttpRequest(),
+	    user_id=localStorage.nowUserId;
+	xhr.open('post',xhrUrl+'/se52/showSubscribe.do',true);
+	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+	xhr.send('user_id='+user_id);
+	xhr.onreadystatechange=function(){
+		if(xhr.readyState==4){
+			if(xhr.status==200){
+				loginAttentionList=JSON.parse(xhr.responseText)['userlist'];
+				document.getElementById('attentionButton').onclick=addAttention;
+				for(let i in loginAttentionList){
+					if(loginAttentionList[i]['user_id']==window.location.href.split('?')[1].split('#')[0]){//判断是否关注
+						document.getElementById('attentionButton').value="已关注";
+						document.getElementById('attentionButton').onclick=deleteAttention;
+					}
+				}
+			}
+		}
+	}
+}
+function addAttention(){/*添加关注*/
+	let xhr=new XMLHttpRequest();
+	xhr.open('post',xhrUrl+'/se52/subscribeUser.do',true);
+	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+	xhr.send('subscribe_userid='+localStorage.nowUserId+'&subscribed__userid='+window.location.href.split('?')[1].split('#')[0]);
+	xhr.onreadystatechange=function(){
+		if(xhr.readyState==4){
+			if(xhr.status==200){
+				if(JSON.parse(xhr.responseText)){
+					document.getElementById('attentionButton').value="已关注";
+					document.getElementById('attentionButton').onclick=deleteAttention;
+				}
+
+			}
+		}
+	}
+}
+function deleteAttention(){//取消关注
+	let xhr=new XMLHttpRequest();
+	xhr.open('post',xhrUrl+'/se52/deleteSubscribe.do',true);
+	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+	xhr.send('subscribe_userid='+localStorage.nowUserId+'&subscribed__userid='+window.location.href.split('?')[1].split('#')[0]);
+	xhr.onreadystatechange=function(){
+		if(xhr.readyState==4){
+			if(xhr.status==200){
+				if(JSON.parse(xhr.responseText)){
+					document.getElementById('attentionButton').value="++关注";
+					document.getElementById('attentionButton').onclick=addAttention;
+				}
+
+			}
+		}
+	}
+}
+
+function showAttentionList(array){
+	let str="";
+	for(let i in array){
+		str+=`
+			<li>
+						<div class="doSomethingTitle">
+								<span class="Something">关注用户</span>
+								<span class="timeOfDoSomething">${array[i]['create_time']}</span>
+						</div>	
+						<div class="doSomethingContent">
+							<a href="personal.html?${array[i]['user_id']}">	${array[i]['user_name']}</a>
+						</div>
+			</li>
+			`
+	}
+	if(array.length==0){
+		str=`
+			<li>
+				<div class="doSomethingTitle">
+								<span class="Something">关注用户</span>
+								<span class="timeOfDoSomething"></span>
+						</div>	
+						<div class="doSomethingContent">
+							<a>暂无</a>
+						</div>
+			</li>
+			`
+	}
+	document.getElementById('postList').innerHTML=str;
+}
+
 
 ~~(function(){
 	let user_id=window.location.href.split('?')[1];
@@ -230,10 +336,13 @@ function sendMessage(){
 		editMessageButton.classList.add('disappear');
 		sendMessageButton.classList.remove('disappear');
 		sendMessageButton.addEventListener('click',sendMessage);
+		if(localStorage.nowUserId)
+		document.getElementById('attentionButton').classList.remove('disappear');
+
 	}
-	if(localStorage.nowUserId){
+	if(localStorage.nowUserId){//判断用户是否登录
 		let xhr=new XMLHttpRequest();
-		xhr.open('post','http://202.116.162.57:8080/se52/user/check.do',true);
+		xhr.open('post',xhrUrl+'/se52/user/check.do',true);
 		xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		xhr.send("id="+localStorage.nowUserId);
 		xhr.onreadystatechange=function(){
@@ -241,11 +350,13 @@ function sendMessage(){
 				if(xhr.status==200){
 					userJson=(JSON.parse(xhr.responseText));
 					fixedTool.classList.remove('disappear');
-					document.getElementById("navUserPhoto").src="http://202.116.162.57:8080"+(JSON.parse(xhr.responseText))['userinfo']['user_img'];
+					document.getElementById("navUserPhoto").src=xhrUrl+(JSON.parse(xhr.responseText))['userinfo']['user_img'];
 				}
 			}
 		}
+		getAttentionOfLogin();
 	}
+
 	getUserMessage();
 	getNewAnnouncement();
 	getUserNoteList();
@@ -255,7 +366,7 @@ function sendMessage(){
 function getUserNoteList(){
 	let user_id=window.location.href.split('?')[1].split('#')[0];
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/showNote.do',true);
+	xhr.open('post',xhrUrl+'/se52/showNote.do',true);
 	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	xhr.send('user_id='+user_id);
 	xhr.onreadystatechange=function(){
@@ -263,14 +374,18 @@ function getUserNoteList(){
 			if(xhr.status==200){
 				showNoteList(JSON.parse(xhr.responseText)['note'],'发布');
 			}
+			else{
+				window.location.href="index.html";
+			}
 		}
+		
 	}
 }
 /*获取评论*/
 function getUserCommontList(){
 	let user_id=window.location.href.split('?')[1].split('#')[0];
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/findNote.do',true);
+	xhr.open('post',xhrUrl+'/se52/findNote.do',true);
 	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	xhr.send('user_id='+user_id);
 	xhr.onreadystatechange=function(){
@@ -285,7 +400,7 @@ function getUserCommontList(){
 function getUserLikeList(){
 	let user_id=window.location.href.split('?')[1].split('#')[0];
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/user/showCollection.do',true);
+	xhr.open('post',xhrUrl+'/se52/user/showCollection.do',true);
 	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	xhr.send('user_id='+user_id);
 	xhr.onreadystatechange=function(){
@@ -343,5 +458,6 @@ document.getElementById('noteNavList').addEventListener('click',function(e){
 		case '发布文章':getUserNoteList();break;
 		case '评论':getUserCommontList();break;
 		case '收藏':getUserLikeList();break;
+		case '关注列表':getAttentionList("showAttentionList");break;
 	}
 })

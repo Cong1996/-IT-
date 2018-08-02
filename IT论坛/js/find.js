@@ -27,9 +27,8 @@ navList.addEventListener('click',function(e){
 
 /*获取特定种类最新*/
 function getNewOfType(type){
-	console.log(type);
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/note/findNewByCategories.do',true);
+	xhr.open('post',xhrUrl+'/se52/note/findNewByCategories.do',true);
 	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xhr.send("categorites_id="+type);
 	xhr.onreadystatechange=function(){
@@ -44,7 +43,7 @@ function getNewOfType(type){
 /*获取所有最新*/
 function getNewArticleAll(){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/note/newall.do',true);
+	xhr.open('post',xhrUrl+'/se52/note/newall.do',true);
 	xhr.send(null);
 	xhr.onreadystatechange=function(){
 		if(xhr.readyState==4){
@@ -86,7 +85,7 @@ getNewArticleAll();
 
 ~~(function getNewAnnouncement(){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/note/findByType.do',true);
+	xhr.open('post',xhrUrl+'/se52/note/findByType.do',true);
 	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	xhr.send('type=announcement');
 	xhr.onreadystatechange=function(){
@@ -101,7 +100,7 @@ getNewArticleAll();
 })();
 function getAnnouncementContent(note_id,title){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/viewNote.do',true);
+	xhr.open('post',xhrUrl+'/se52/viewNote.do',true);
 	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xhr.send('noteId='+note_id);
 	xhr.onreadystatechange=function(){
@@ -127,7 +126,7 @@ searchButton.addEventListener('click',function(){
 });
 function searchNote(value){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/note/findByTitle.do',true);
+	xhr.open('post',xhrUrl+'/se52/note/findByTitle.do',true);
 	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	xhr.send('note_title='+value);
 	xhr.onreadystatechange=function(){

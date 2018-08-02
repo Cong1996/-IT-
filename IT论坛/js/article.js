@@ -3,7 +3,8 @@ let emailCodeNumber,/*登记邮箱验证码*/
 commontButton=document.getElementById('commontButton'),
 userId,
 userName,
-note_id;
+note_id,
+xhrUrl='http://202.116.162.57:8080';
 /*登录框初始化*/
 function initAlert(loginButtonId){
 	document.body.innerHTML+=`
@@ -217,7 +218,7 @@ function serialize(str){
 
 /*获取邮箱验证码*/
 function getEmailCode(emailNumber){
-	let xhr=ajax('post','http://202.116.162.57:8080/se52/checkEmail.do',true,
+	let xhr=ajax('post',xhrUrl+'/se52/checkEmail.do',true,
 		'user_email='+emailNumber);
 	xhr.onreadystatechange=function(){
 		if(xhr.readyState==4){
@@ -234,7 +235,7 @@ function getEmailCode(emailNumber){
 }
 /*注册*/
 function register(data){
-	let xhr=ajax('post','http://202.116.162.57:8080/se52/register.do',true,data);
+	let xhr=ajax('post',xhrUrl+'/se52/register.do',true,data);
 		xhr.onreadystatechange = function(){
 		    if(xhr.readyState === 4){
 		        if(xhr.status == 200){
@@ -260,7 +261,7 @@ function register(data){
 }
 /*登录*/
 function login(data){
-	let xhr=ajax('post','http://202.116.162.57:8080/se52/login.do',true,data);
+	let xhr=ajax('post',xhrUrl+'/se52/login.do',true,data);
 	xhr.onreadystatechange = function(){
 		    if(xhr.readyState === 4){
 		        if(xhr.status == 200){
@@ -305,15 +306,15 @@ function coolAlert(str){
 /*获取数据*/
 function getUserPhoto(){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/user/check.do',true);
+	xhr.open('post',xhrUrl+'/se52/user/check.do',true);
 	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xhr.send("id="+localStorage.getItem('nowUserId'));
 	xhr.onreadystatechange=function(){
 		if(xhr.readyState==4){
 			if(xhr.status==200){
 				let userJson=(JSON.parse(xhr.responseText));
-				document.getElementById("userPhoto").src="http://202.116.162.57:8080"+userJson['userinfo']['user_img'];
-				document.getElementById("commontUserPhoto").src="http://202.116.162.57:8080"+userJson['userinfo']['user_img'];
+				document.getElementById("userPhoto").src=xhrUrl+userJson['userinfo']['user_img'];
+				document.getElementById("commontUserPhoto").src=xhrUrl+userJson['userinfo']['user_img'];
 				userId=userJson['userinfo']['user_id'];
 				userName=userJson['userinfo']['user_name'];
 			}
@@ -325,14 +326,14 @@ function getUserPhoto(){
 
 function getPosterMessage(postId){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/user/check.do',true);
+	xhr.open('post',xhrUrl+'/se52/user/check.do',true);
 	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xhr.send("id="+postId);
 	xhr.onreadystatechange=function(){
 		if(xhr.readyState==4){
 			if(xhr.status==200){
-				document.getElementById('posterPhoto').src="http://202.116.162.57:8080"+(JSON.parse(xhr.responseText))['userinfo']['user_img'];
-				document.getElementById('authorPhoto').src="http://202.116.162.57:8080"+(JSON.parse(xhr.responseText))['userinfo']['user_img'];
+				document.getElementById('posterPhoto').src=xhrUrl+(JSON.parse(xhr.responseText))['userinfo']['user_img'];
+				document.getElementById('authorPhoto').src=xhrUrl+(JSON.parse(xhr.responseText))['userinfo']['user_img'];
 				document.getElementById('articlPosterName').innerHTML=(JSON.parse(xhr.responseText))['userinfo']['user_name'];
 				document.getElementById('authorName').innerHTML=(JSON.parse(xhr.responseText))['userinfo']['user_name'];
 
@@ -400,7 +401,7 @@ function showCommont(commontArray){
 		showCommontArea.innerHTML="";
 	for(let i of commontArray){
 		let xhr=new XMLHttpRequest();
-		xhr.open('post','http://202.116.162.57:8080/se52/user/check.do',true);
+		xhr.open('post',xhrUrl+'/se52/user/check.do',true);
 		xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		xhr.send("id="+i['u_id']);
 		xhr.onreadystatechange=function(){
@@ -410,7 +411,7 @@ function showCommont(commontArray){
 					let time=getTime(i['create_time']);
 					str=`
 						<li>
-							<img src=${"http://202.116.162.57:8080"+JSON.parse(xhr.responseText)['userinfo']['user_img']} width="40px">
+							<img src=${xhrUrl+JSON.parse(xhr.responseText)['userinfo']['user_img']} width="40px">
 							<div class="commont-user-area">
 								<span class="commont-user-name">${i['u_name']}</span>
 								<span class=commont-time>${time}</span>
@@ -432,7 +433,7 @@ function showCommont(commontArray){
 
 function getArticleContent(){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/viewNote.do',true);
+	xhr.open('post',xhrUrl+'/se52/viewNote.do',true);
 	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xhr.send('noteId='+window.location.href.split('?')[1].split('#')[0]);
 	xhr.onreadystatechange=function(){
@@ -457,7 +458,7 @@ function getArticleContent(){
 /*发表评论*/
 function sendCommontXhr(content,noteid,user_id,user_name){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/addComment.do',true);
+	xhr.open('post',xhrUrl+'/se52/addComment.do',true);
 	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	content=encodeURIComponent(content);
 	let data=`content=${content}&noteid=${noteid}&user_id=${user_id}&user_name=${user_name}`;
@@ -518,7 +519,7 @@ function loadAddEvent(){
 function likeNote(){
 
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/user/addCollection.do',true);
+	xhr.open('post',xhrUrl+'/se52/user/addCollection.do',true);
 	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	xhr.send('userinfo_user_id='+localStorage.nowUserId+'&noteinfo_note_id='+note_id);
 	xhr.onreadystatechange=function(){
@@ -537,7 +538,7 @@ function likeNote(){
 }
 function dislikeNote(){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/user/deleteCollection.do',true);
+	xhr.open('post',xhrUrl+'/se52/user/deleteCollection.do',true);
 	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	xhr.send('userinfo_user_id='+localStorage.nowUserId+'&noteinfo_note_id='+note_id);
 	xhr.onreadystatechange=function(){
@@ -555,7 +556,7 @@ function dislikeNote(){
 }
 function getCollection(){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/user/showCollection.do',true);
+	xhr.open('post',xhrUrl+'/se52/user/showCollection.do',true);
 	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	xhr.send('user_id='+localStorage.nowUserId);
 	xhr.onreadystatechange=function(){

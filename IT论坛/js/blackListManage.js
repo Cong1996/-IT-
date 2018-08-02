@@ -1,7 +1,7 @@
-
+let xhrUrl='http://202.116.162.57:8080';
 ~~(function getAllBlackList(){
 	var xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/blacklist/findall.do',true);
+	xhr.open('post',xhrUrl+'/se52/blacklist/findall.do',true);
 	xhr.send(null);
 	xhr.onreadystatechange=function(){
 		if(xhr.readyState==4){
@@ -37,7 +37,7 @@ function deleteUser(user_id){
 }
 function recoverUser(user_id){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/blacklist/delete.do',true);
+	xhr.open('post',xhrUrl+'/se52/blacklist/delete.do',true);
 	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	xhr.send('user_id='+user_id);
 	xhr.onreadystatechange=function(){

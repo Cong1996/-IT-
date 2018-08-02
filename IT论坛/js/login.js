@@ -1,4 +1,5 @@
-let emailCodeNumber;/*登记邮箱验证码*/
+let emailCodeNumber,
+	xhrUrl='http://202.116.162.57:8080';/*登记邮箱验证码*/
 
 /*登录框初始化*/
 function initAlert(loginButtonId){
@@ -53,8 +54,8 @@ function initAlert(loginButtonId){
 
 			</div>		
 		</div>
-	</div>
-	<div id="coolAlert">something is Error</div>	
+		</div>
+		<div id="coolAlert">something is Error</div>	
 	`;
 	let login=document.getElementById('login'),
 	register=document.getElementById('register'),
@@ -218,7 +219,7 @@ function serialize(str){
 
 /*获取邮箱验证码*/
 function getEmailCode(emailNumber){
-	let xhr=ajax('post','http://202.116.162.57:8080/se52/checkEmail.do',true,
+	let xhr=ajax('post',xhrUrl+'/se52/checkEmail.do',true,
 		'user_email='+emailNumber);
 	xhr.onreadystatechange=function(){
 		if(xhr.readyState==4){
@@ -235,7 +236,7 @@ function getEmailCode(emailNumber){
 }
 /*注册*/
 function register(data){
-	let xhr=ajax('post','http://202.116.162.57:8080/se52/register.do',true,data);
+	let xhr=ajax('post',xhrUrl+'/se52/register.do',true,data);
 		xhr.onreadystatechange = function(){
 		    if(xhr.readyState === 4){
 		        if(xhr.status == 200){
@@ -261,7 +262,7 @@ function register(data){
 }
 /*登录*/
 function login(data){
-	let xhr=ajax('post','http://202.116.162.57:8080/se52/login.do',true,data);
+	let xhr=ajax('post',xhrUrl+'/se52/login.do',true,data);
 	xhr.onreadystatechange = function(){
 		    if(xhr.readyState === 4){
 		        if(xhr.status == 200){
@@ -306,14 +307,14 @@ function coolAlert(str){
 /*获取数据*/
 function getUserPhoto(){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/user/check.do',true);
+	xhr.open('post',xhrUrl+'/se52/user/check.do',true);
 	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xhr.send("id="+localStorage.getItem('nowUserId'));
 	xhr.onreadystatechange=function(){
 		if(xhr.readyState==4){
 			if(xhr.status==200){
 				let userJson=(JSON.parse(xhr.responseText));
-				document.getElementById("userPhoto").src="http://202.116.162.57:8080"+userJson['userinfo']['user_img'];
+				document.getElementById("userPhoto").src=xhrUrl+userJson['userinfo']['user_img'];
 			}
 		}
 	}

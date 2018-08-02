@@ -1,6 +1,7 @@
 let userNumber=document.getElementById('userNumber'),
 	userPassword=document.getElementById('userPassword'),
-	submitButton=document.getElementById('submitButton');
+	submitButton=document.getElementById('submitButton'),
+	xhrUrl='http://202.116.162.57:8080';
 userNumber.addEventListener('focus',function(){
 	if(userNumber.value=="输入账号"){
 		userNumber.value='';
@@ -35,7 +36,7 @@ function coolAlert(str){
 }
 function login(data){
 	let xhr=new XMLHttpRequest();
-		xhr.open('post','http://202.116.162.57:8080/se52/login.do',true);
+		xhr.open('post',xhrUrl+'/se52/login.do',true);
 		xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 		xhr.send(data);
 	xhr.onreadystatechange = function(){

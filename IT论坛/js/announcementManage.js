@@ -1,7 +1,8 @@
 let submitButton=document.getElementById('submitButton'),
 	resetButton=document.getElementById('resetButton'),
 	noticeTitle=document.getElementById('noticeTitle'),
-	noticeContent=document.getElementById('noticeContent');
+	noticeContent=document.getElementById('noticeContent'),
+	xhrUrl='http://202.116.162.57:8080';
 submitButton.onclick=checkNotice;
 resetButton.onclick=function(){
 	noticeTitle.value='';
@@ -24,7 +25,7 @@ function checkNotice(){
 
 	data=`note_title=${title}&content=${content}&poster_id=admin&poster_name=admin&type=announcement&categories_id=7`;
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/note/add.do',true);
+	xhr.open('post',xhrUrl+'/se52/note/add.do',true);
 	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded"); 
 	xhr.send(data);
 	xhr.onreadystatechange=function(){
@@ -44,7 +45,7 @@ function checkNotice(){
 
 ~~(function getAllAnnouncement(){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/note/findByType.do',true);
+	xhr.open('post',xhrUrl+'/se52/note/findByType.do',true);
 	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	xhr.send('type=announcement');
 	xhr.onreadystatechange=function(){
@@ -61,7 +62,7 @@ function checkNotice(){
 
 function getAnnouncementContent(note_id,title,create_time){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/viewNote.do',true);
+	xhr.open('post',xhrUrl+'/se52/viewNote.do',true);
 	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xhr.send('noteId='+note_id);
 	xhr.onreadystatechange=function(){
@@ -93,7 +94,7 @@ function getAnnouncementContent(note_id,title,create_time){
 }
 function deleteAnnouncement(note_id){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/note/delete.do',true);
+	xhr.open('post',xhrUrl+'/se52/note/delete.do',true);
 	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	xhr.send('note_id='+note_id);
 	xhr.onreadystatechange=function(){

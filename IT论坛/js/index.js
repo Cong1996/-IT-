@@ -28,7 +28,7 @@ navList.addEventListener('click',function(e){
 /*获取特定种类热门*/
 function getHotOfType(type){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/note/findHotByCategories.do',true);
+	xhr.open('post',xhrUrl+'/se52/note/findHotByCategories.do',true);
 	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xhr.send("categorites_id="+type);
 	xhr.onreadystatechange=function(){
@@ -43,7 +43,7 @@ function getHotOfType(type){
 /*获取所有热门*/
 function getHotArticleAll(){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/note/hotall.do',true);
+	xhr.open('post',xhrUrl+'/se52/note/hotall.do',true);
 	xhr.send(null);
 	xhr.onreadystatechange=function(){
 		if(xhr.readyState==4){
@@ -82,24 +82,10 @@ function showHotArticleAll(array){
 	document.getElementById('postList').innerHTML=str;
 }
 getHotArticleAll();
-~~(function getNewAnnouncement(){
-	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/note/findByType.do',true);
-	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-	xhr.send('type=announcement');
-	xhr.onreadystatechange=function(){
-		if(xhr.readyState==4){
-			if(xhr.status==200){
-				let array=JSON.parse(xhr.responseText)['list'],
-				i=array.length-1;
-				getAnnouncementContent(array[i]['note_id'],array[i]['note_title']);
-			}
-		}
-	}
-})();
+
 function getAnnouncementContent(note_id,title){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/viewNote.do',true);
+	xhr.open('post',xhrUrl+'/se52/viewNote.do',true);
 	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xhr.send('noteId='+note_id);
 	xhr.onreadystatechange=function(){
@@ -118,7 +104,21 @@ function getAnnouncementContent(note_id,title){
 		}
 	}
 }
-
+(function getNewAnnouncement(){
+	let xhr=new XMLHttpRequest();
+	xhr.open('post',xhrUrl+'/se52/note/findByType.do',true);
+	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+	xhr.send('type=announcement');
+	xhr.onreadystatechange=function(){
+		if(xhr.readyState==4){
+			if(xhr.status==200){
+				let array=JSON.parse(xhr.responseText)['list'],
+				i=array.length-1;
+				getAnnouncementContent(array[i]['note_id'],array[i]['note_title']);
+			}
+		}
+	}
+})();
 /*搜素*/
 searchButton.addEventListener('click',function(){
 	let searchValue=document.getElementById('searchNote').value;
@@ -126,7 +126,7 @@ searchButton.addEventListener('click',function(){
 });
 function searchNote(value){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/note/findByTitle.do',true);
+	xhr.open('post',xhrUrl+'/se52/note/findByTitle.do',true);
 	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	xhr.send('note_title='+value);
 	xhr.onreadystatechange=function(){

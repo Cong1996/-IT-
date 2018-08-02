@@ -11,7 +11,8 @@ let postContent=document.getElementById('postContent'),
 		"categories_id":1,
 		"type":'share',
 		"content":null
-	};
+	},
+	xhrUrl='http://202.116.162.57:8080';
 postContent.onfocus=edit;
 postContent.onblur=noedit;
 function edit(){
@@ -73,12 +74,12 @@ function uploadPhoto(){
 		let uploadFile = new FormData(document.getElementById("file"));
 		if("undefined" != typeof(uploadFile) && uploadFile != null && uploadFile != ""){
 		let	xhr=new XMLHttpRequest();
-			xhr.open('post','http://202.116.162.57:8080/se52/noteimg.do',true);
+			xhr.open('post',xhrUrl+'/se52/noteimg.do',true);
 			xhr.send(uploadFile);
 			xhr.onreadystatechange=function(){
 				if(xhr.readyState==4){
 					if(xhr.status==200){
-						postContent.innerHTML+=`<img src="${'http://202.116.162.57:8080'+xhr.responseText}" width="300px" style="display:block;">`
+						postContent.innerHTML+=`<img src="${xhrUrl+xhr.responseText}" width="300px" style="display:block;">`
 					}
 				}
 			}
@@ -130,7 +131,7 @@ articleButton.addEventListener('click',function(e){
 function sendArticle(){
 	let xhr=new XMLHttpRequest(),
 		data;
-	xhr.open('post','http://202.116.162.57:8080/se52/note/add.do',true);
+	xhr.open('post',xhrUrl+'/se52/note/add.do',true);
 	article['content']= encodeURIComponent(article['content']);
 	console.log(article['content']);
 	data=Serialize(article,'content');
@@ -185,7 +186,7 @@ window.onload=function(){
 /*获取信息*/
 function getUserMessage(){
 	let xhr=new XMLHttpRequest();
-	xhr.open('post','http://202.116.162.57:8080/se52/user/check.do',true);
+	xhr.open('post',xhrUrl+'/se52/user/check.do',true);
 	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 	xhr.send("id="+localStorage.getItem('nowUserId'));
 	xhr.onreadystatechange=function(){
