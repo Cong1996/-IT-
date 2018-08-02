@@ -6,7 +6,8 @@ let editButton=document.getElementById('editMessageButton'),
 	userJson,
 	xhrUrl='http://202.116.162.57:8080',
 	loginAttentionList,
-	user_name;
+	user_name,
+	replyToUserId;
 editButton.onclick=disappear;
 returnMainButton.onclick=disappear;
 /*切换信息区域*/
@@ -213,45 +214,8 @@ function getAnnouncementContent(note_id,title){
 		}
 	}
 }
-/*发送私信*/
-function sendMessage(){
-	if(!localStorage.nowUserId){
-		coolAlert('请先登录');
-		return false;
-	}
-	document.getElementById('sendMessageArea').style="top:60px";
-	document.getElementById('accepterName').innerText=user_name;
-}
-document.getElementById('closeMessageSend').onclick=function(){
-	document.getElementById('sendMessageArea').style="top:-260px";
-}
-document.getElementById('sendNow').onclick=function(){
-	let value=document.getElementById('sendMessageContent').value,
-		user_id=window.location.href.split('?')[1],
-		send_user_id=localStorage.nowUserId;
-	if(value){
-		let xhr=new XMLHttpRequest();
-		xhr.open('post',xhrUrl+'/se52/addMessage.do',true);
-		xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-		xhr.send('content='+value+'&getterId='+user_id+'&user_id='+send_user_id);
-		xhr.onreadystatechange=function(){
-			if(xhr.readyState==4){
-				if(xhr.status==200){
-					if(JSON.parse(xhr.responseText)['addflag']){
-						document.getElementById('sendMessageArea').style="top:-260px";
-						coolAlert('发送成功');
-					}
-					else{
-						coolAlert('发送失败');
-					}
-				}
-			}
-		}
-	}
-	else{
-		coolAlert('说点东西吧');
-	}
-}
+
+
 
 /*关注用户*/
 function getAttentionList(){/*查看用户的关注列表*/
@@ -357,6 +321,81 @@ function showAttentionList(array){
 	document.getElementById('postList').innerHTML=str;
 }
 
+/*发送私信*/
+function sendMessage(){
+	if(!localStorage.nowUserId){
+		coolAlert('请先登录');
+		return false;
+	}
+	document.getElementById('sendMessageArea').style="top:60px";
+	document.getElementById('accepterName').innerText=user_name;
+}
+/*回复私信*/
+function replyMessage(toId,toName){
+	replyToUserId=toId;
+	document.getElementById('sendReplyMessageArea').style="top:60px";
+	document.getElementById('accepterReplyName').innerText=toName;
+}
+document.getElementById('closeReplyMessageSend').onclick=function(){
+	document.getElementById('sendReplyMessageArea').style="top:-260px";
+}
+document.getElementById('sendReplyNow').onclick=function(){
+	let value=document.getElementById('sendReplyMessageContent').value,
+		user_id=replyToUserId,
+		send_user_id=localStorage.nowUserId;
+	if(value){
+		let xhr=new XMLHttpRequest();
+		xhr.open('post',xhrUrl+'/se52/addMessage.do',true);
+		xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+		xhr.send('content='+value+'&getterId='+user_id+'&user_id='+send_user_id);
+		xhr.onreadystatechange=function(){
+			if(xhr.readyState==4){
+				if(xhr.status==200){
+					if(JSON.parse(xhr.responseText)['addflag']){
+						document.getElementById('sendReplyMessageArea').style="top:-260px";
+						coolAlert('发送成功');
+					}
+					else{
+						coolAlert('发送失败');
+					}
+				}
+			}
+		}
+	}
+	else{
+		coolAlert('说点东西吧');
+	}
+}
+document.getElementById('closeMessageSend').onclick=function(){
+	document.getElementById('sendMessageArea').style="top:-260px";
+}
+document.getElementById('sendNow').onclick=function(){
+	let value=document.getElementById('sendMessageContent').value,
+		user_id=window.location.href.split('?')[1],
+		send_user_id=localStorage.nowUserId;
+	if(value){
+		let xhr=new XMLHttpRequest();
+		xhr.open('post',xhrUrl+'/se52/addMessage.do',true);
+		xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+		xhr.send('content='+value+'&getterId='+user_id+'&user_id='+send_user_id);
+		xhr.onreadystatechange=function(){
+			if(xhr.readyState==4){
+				if(xhr.status==200){
+					if(JSON.parse(xhr.responseText)['addflag']){
+						document.getElementById('sendMessageArea').style="top:-260px";
+						coolAlert('发送成功');
+					}
+					else{
+						coolAlert('发送失败');
+					}
+				}
+			}
+		}
+	}
+	else{
+		coolAlert('说点东西吧');
+	}
+}
 /*获取私信*/
 function getYourMessage(){
 	let xhr=new XMLHttpRequest();
@@ -383,7 +422,9 @@ function showYourMessage(array){
 						<div class="doSomethingContent" >
 							<a>	${array[i]['content']}</a>
 						</div>
+
 			</li>
+			<input class="replyButton" type="button" value="回复此人" onclick="replyMessage('${array[i]['poster']}','${array[i]['poster_name']}')">
 			`
 	}
 	if(array.length==0){
