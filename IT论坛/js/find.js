@@ -112,7 +112,6 @@ function getAnnouncementContent(note_id,title){
 						<div class="noticeBody">
 							${str}
 						</div>
-						<a class="noticeMore">往期公告>></a>
 					`;
 				document.getElementById('notice').innerHTML=li;
 			}
