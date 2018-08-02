@@ -4,7 +4,7 @@ let editButton=document.getElementById('editMessageButton'),
 	returnMainButton=document.getElementById('returnMainButton'),
 	fixedTool=document.getElementById('fixedTool'),
 	userJson,
-	xhrUrl='http://202.116.162.57:8080',
+	xhrUrl='http://182.254.230.88:8080',
 	loginAttentionList,
 	user_name,
 	replyToUserId;
@@ -554,15 +554,49 @@ function getUserLikeList(){
 		}
 	}
 }
+function deleteSome(type,f_id,s_id){/*删除文章，评论，收藏*/
+	let result=confirm('是否删除？');
+	if(result){
+		let url,data;
+		if(type=='note'){
+			url=xhrUrl+'/se52/note/delete.do';
+			data="note_id="+f_id;
+		}
+		let xhr=new XMLHttpRequest();
+		xhr.open('post',url,true);
+		xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+		xhr.send(data);
+		xhr.onreadystatechange=function(){
+			if(xhr.readyState==4){
+				if(xhr.status==200){
+					if(JSON.parse(xhr.responseText)['message']){
+						window.location.href="";
+					}
+					else{
+						coolAlert('删除失败');
+					}
+				}
+			}
+		}
+	}
+}
 function showNoteList(array,dowhat){
-	let str="";
+	let str="",
+		display="none",
+		thisFun="";
 
+	if(localStorage.nowUserId==window.location.href.split('?')[1]&&dowhat=="发布"){
+		display="block";
+	}
 	for(let i in array){
+		if(dowhat=="发布")
+		thisFun=`onclick=deleteSome('note',${array[i]["note_id"]})`;
 		str+=`
 			<li>
 						<div class="doSomethingTitle">
 								<span class="Something">${dowhat}了文章</span>
 								<span class="timeOfDoSomething">${array[i]['create_time']}</span>
+								<span class="deleteThisLi fa fa-close" style="display:${display};" ${thisFun}></span>
 						</div>	
 						<div class="doSomethingContent">
 							<a href="article.html?${array[i]['note_id']}">	${array[i]['note_title']}</a>

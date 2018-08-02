@@ -249,13 +249,21 @@
 	height:40px;
 	line-height: 40px;
 }
+.deleteThisLi{
+	position:absolute;
+	right:0;
+	top:0;
+}
+.deleteThisLi:hover{
+	color:#f00;
+}
 .Something{
 	position: absolute;
 	left:0;
 }
 .timeOfDoSomething{
 	position: absolute;
-	right: 0;
+	left: 100px;
 }
 .doSomethingContent{
 	background-color: rgb(253,253,253);

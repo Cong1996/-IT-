@@ -1,7 +1,7 @@
 let userNumber=document.getElementById('userNumber'),
 	userPassword=document.getElementById('userPassword'),
 	submitButton=document.getElementById('submitButton'),
-	xhrUrl='http://202.116.162.57:8080';
+	xhrUrl='http://182.254.230.88:8080';
 userNumber.addEventListener('focus',function(){
 	if(userNumber.value=="输入账号"){
 		userNumber.value='';

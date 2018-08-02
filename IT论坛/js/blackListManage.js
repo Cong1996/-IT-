@@ -1,4 +1,4 @@
-let xhrUrl='http://202.116.162.57:8080';
+let xhrUrl='http://182.254.230.88:8080';
 ~~(function getAllBlackList(){
 	var xhr=new XMLHttpRequest();
 	xhr.open('post',xhrUrl+'/se52/blacklist/findall.do',true);

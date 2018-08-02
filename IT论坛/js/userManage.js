@@ -1,7 +1,7 @@
 
 let userSearchButton=document.getElementById('userSearchButton'),
 	userSearch=document.getElementById('userSearch'),
-	xhrUrl='http://202.116.162.57:8080';
+	xhrUrl='http://182.254.230.88:8080';
 
 ~~(function getAllUser(){
 	let xhr=new XMLHttpRequest();

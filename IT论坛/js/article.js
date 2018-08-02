@@ -4,7 +4,7 @@ commontButton=document.getElementById('commontButton'),
 userId,
 userName,
 note_id,
-xhrUrl='http://202.116.162.57:8080';
+xhrUrl='http://182.254.230.88:8080';
 /*登录框初始化*/
 function initAlert(loginButtonId){
 	document.body.innerHTML+=`

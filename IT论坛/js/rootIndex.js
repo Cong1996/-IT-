@@ -1,4 +1,4 @@
-let xhrUrl='http://202.116.162.57:8080';
+let xhrUrl='http://182.254.230.88:8080';
 ~~(function getDate(){
 	console.log('读取中');
 	let xhr=new XMLHttpRequest();

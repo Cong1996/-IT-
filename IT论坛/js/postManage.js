@@ -1,5 +1,5 @@
 let articleTypeArray=['推荐','前端','Android','后台','人工智能','iOS','工具资源','阅读','运维'],
-	xhrUrl='http://202.116.162.57:8080';
+	xhrUrl='http://182.254.230.88:8080';
 
 ~~(function getAllPostList(){
 

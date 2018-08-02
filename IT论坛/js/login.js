@@ -1,5 +1,5 @@
 let emailCodeNumber,
-	xhrUrl='http://202.116.162.57:8080';/*登记邮箱验证码*/
+	xhrUrl='http://182.254.230.88:8080';/*登记邮箱验证码*/
 
 /*登录框初始化*/
 function initAlert(loginButtonId){

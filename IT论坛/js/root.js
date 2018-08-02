@@ -9,7 +9,7 @@ userIcon.addEventListener('click',function(){
 });/*管理员页面公用脚本*/
 ~~(function isRoot(){
 	if(!localStorage.getItem('superRoot'))
-		window.location.href="backLogin.html";
+		window.location.href="backlogin.html";
 })();
 /*弹窗*/
 function coolAlert(str){
