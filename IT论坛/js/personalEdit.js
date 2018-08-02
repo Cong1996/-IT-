@@ -5,7 +5,8 @@ let editButton=document.getElementById('editMessageButton'),
 	fixedTool=document.getElementById('fixedTool'),
 	userJson,
 	xhrUrl='http://202.116.162.57:8080',
-	loginAttentionList;
+	loginAttentionList,
+	user_name;
 editButton.onclick=disappear;
 returnMainButton.onclick=disappear;
 /*切换信息区域*/
@@ -122,6 +123,7 @@ function changePhoto(url){
 function changeName(str){
 	document.getElementById('personalName').innerText=str;
 	document.getElementById('userName').value=str;
+	user_name=str;
 }
 
 /*监听修改信息*/
@@ -217,7 +219,38 @@ function sendMessage(){
 		coolAlert('请先登录');
 		return false;
 	}
-	console.log('ok');
+	document.getElementById('sendMessageArea').style="top:60px";
+	document.getElementById('accepterName').innerText=user_name;
+}
+document.getElementById('closeMessageSend').onclick=function(){
+	document.getElementById('sendMessageArea').style="top:-260px";
+}
+document.getElementById('sendNow').onclick=function(){
+	let value=document.getElementById('sendMessageContent').value,
+		user_id=window.location.href.split('?')[1],
+		send_user_id=localStorage.nowUserId;
+	if(value){
+		let xhr=new XMLHttpRequest();
+		xhr.open('post',xhrUrl+'/se52/addMessage.do',true);
+		xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+		xhr.send('content='+value+'&getterId='+user_id+'&user_id='+send_user_id);
+		xhr.onreadystatechange=function(){
+			if(xhr.readyState==4){
+				if(xhr.status==200){
+					if(JSON.parse(xhr.responseText)['addflag']){
+						document.getElementById('sendMessageArea').style="top:-260px";
+						coolAlert('发送成功');
+					}
+					else{
+						coolAlert('发送失败');
+					}
+				}
+			}
+		}
+	}
+	else{
+		coolAlert('说点东西吧');
+	}
 }
 
 /*关注用户*/
@@ -324,8 +357,75 @@ function showAttentionList(array){
 	document.getElementById('postList').innerHTML=str;
 }
 
+/*获取私信*/
+function getYourMessage(){
+	let xhr=new XMLHttpRequest();
+	xhr.open('post',xhrUrl+'/se52/showMessage.do',true);
+	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+	xhr.send('user_id='+localStorage.nowUserId);
+	xhr.onreadystatechange=function(){
+		if(xhr.readyState==4){
+			if(xhr.status==200){
+				showYourMessage(JSON.parse(xhr.responseText)['count']);
+			}
+		}
+	}
+}
+function showYourMessage(array){
+	let str="";
+	for(let i in array){
+		str+=`
+			<li onclick="deleteMessage('${array[i]['message_id']}',this)">
+						<div class="doSomethingTitle">
+								<span class="Something">发送者:${array[i]['poster_name']}</span>
+								<span class="timeOfDoSomething">发送时间:${array[i]['create_time']}</span>
+						</div>	
+						<div class="doSomethingContent" >
+							<a>	${array[i]['content']}</a>
+						</div>
+			</li>
+			`
+	}
+	if(array.length==0){
+		str=`
+			<li>
+						<div class="doSomethingTitle">
+								<span class="Something">暂无</span>
+								<span class="timeOfDoSomething"></span>
+						</div>	
+						<div class="doSomethingContent">
+							<a>暂无</a>
+						</div>
+			</li>
+			`
+	}
+	document.getElementById('postList').innerHTML=str;
+}
 
-~~(function(){
+/*删除消息*/
+function deleteMessage(message_id,dom){
+	let result=confirm('确定删除吗？');
+	if(result){
+		let xhr=new XMLHttpRequest();
+		xhr.open('post',xhrUrl+'/se52/deleteMessage.do',true);
+		xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+		xhr.send('message_id='+message_id);
+		xhr.onreadystatechange=function(){
+				if(xhr.readyState==4){
+					if(xhr.status==200){
+						if(JSON.parse(xhr.responseText)["deleteflag"]){
+							dom.style="display:none";
+							coolAlert('删除成功');
+						}
+						else{
+							coolAlert('删除失败');
+						}
+					}
+				}
+		}
+	}
+}
+(function(){
 	let user_id=window.location.href.split('?')[1];
 	if(!user_id){
 		window.location.href="index.html";
@@ -336,10 +436,11 @@ function showAttentionList(array){
 		editMessageButton.classList.add('disappear');
 		sendMessageButton.classList.remove('disappear');
 		sendMessageButton.addEventListener('click',sendMessage);
-		if(localStorage.nowUserId)
-		document.getElementById('attentionButton').classList.remove('disappear');
-
+		if(localStorage.nowUserId){
+			document.getElementById('attentionButton').classList.remove('disappear');
+		}
 	}
+
 	if(localStorage.nowUserId){//判断用户是否登录
 		let xhr=new XMLHttpRequest();
 		xhr.open('post',xhrUrl+'/se52/user/check.do',true);
@@ -354,9 +455,11 @@ function showAttentionList(array){
 				}
 			}
 		}
+		if(user_id==localStorage.nowUserId){
+			document.getElementById('yourMessage').style="display:block";
+		}
 		getAttentionOfLogin();
 	}
-
 	getUserMessage();
 	getNewAnnouncement();
 	getUserNoteList();
@@ -459,5 +562,6 @@ document.getElementById('noteNavList').addEventListener('click',function(e){
 		case '评论':getUserCommontList();break;
 		case '收藏':getUserLikeList();break;
 		case '关注列表':getAttentionList("showAttentionList");break;
+		case '消息':getYourMessage();break;
 	}
 })
