@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="../style/font-awesome.min.css">
 </head>
 <body>
+	<div id="wrap"></div>
 	<header>
 		<div class="nav">
 			<a><img src="../fakeIT.ico"></a>
@@ -90,9 +91,7 @@
 								<input type="button" value="点击上传">
 							</div>
 							<form method="post" id="file" action="" enctype="multipart/form-data">
-						    <h3>选择一个文件:</h3>
 						    <input id="excelFile" type="file" name="uploadFile" onchange="uploadFiles();"/>
-						    <br/><br/>
 							</form>		
 						</div>
 					</li>
@@ -197,6 +196,7 @@
 		<input id="sendReplyNow" type="button" value="发送">
 	</div>
 	<div id="coolAlert">something is Error</div>
+	<script src="../js/backmofang.js"></script>
 	<script src="../js/calendar.js"></script>
 	<script src="../js/personalEdit.js"></script>
 </body>

@@ -5,6 +5,8 @@ function initMofang(containerID,maxwidth,minwidth,number,durationMin,durationMax
 	getRandom=(max,min)=>(Math.ceil(Math.random()*(max-min)+min)),
 	vW=window.innerWidth,
 	vH=window.innerHeight;
+	var colorArray=["#339999","#ccccff","#FF4499","#000","#FFCCFF",
+			"rgb(0,108,255)","#fff"];
 mofang.prototype={
 	init(){
 		this.ul=document.createElement('ul');
@@ -16,6 +18,7 @@ mofang.prototype={
 		this.duration=getRandom(durationMax,durationMin);
 		this.ul.style.top=this.pointY+'px';
 		this.ul.style.left=this.pointX+'px';
+		this.lineColor=colorArray[getRandom(0,colorArray.length-1)];
 		this.addLi();
 		this.ul.style.animationDuration=this.duration+'s';
 		document.getElementById('wrap').append(this.ul);
@@ -23,9 +26,10 @@ mofang.prototype={
 	addLi(){
 		var style=`width:${this.w}px;height:${this.h}px;`,
 			li="";
+
 		for(var i=0;i<6;i++){
 			switch(i){
-				case 0:style+=`transform:translateZ(${this.w/2}px);`;break;
+				case 0:style+=`transform:translateZ(${this.w/2}px);border-color:${this.lineColor};`;break;
 				case 1:style+=`transform:translateZ(${-this.w/2}px);`;break;
 				case 2:style+=`transform:rotateY(90deg) translateZ(${this.w/2}px);`;break;
 				case 3:style+=`transform:rotateY(90deg) translateZ(${-this.w/2}px);`;break;
@@ -44,4 +48,4 @@ function addMofang(num){
 }
 addMofang(number);
 }
-initMofang('wrap',10,50,20,10,20);
+initMofang('wrap',10,50,40,5,60);
