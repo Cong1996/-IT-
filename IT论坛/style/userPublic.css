@@ -28,8 +28,6 @@ header{
 #canvas{
 	z-index: -1;
 }
-
-
 	.loginAlertArea{
 		position: fixed;
 		top:0;
@@ -216,7 +214,7 @@ header{
 			left:200px;
 			transform-style:preserve-3d;
 			font-size:0;
-			top:800px;
+			top:100vh;
 			animation:turnTop 10s linear infinite;
 		}
 		.mofang li{
@@ -228,7 +226,7 @@ header{
 		}
 		@keyframes turnTop{
 			100%{
-				top:-150px;
+				top:-10vh;
 				transform:rotate(360deg);
 			}
 		}

@@ -6,7 +6,7 @@ function initMofang(containerID,maxwidth,minwidth,number,durationMin,durationMax
 	vW=window.innerWidth,
 	vH=window.innerHeight;
 	var colorArray=["#339999","#ccccff","#FF4499","#000","#FFCCFF",
-			"rgb(0,108,255)","#fff"];
+			"rgb(0,108,255)","rgb(0,108,255)","#006633","#9933CC"];
 mofang.prototype={
 	init(){
 		this.ul=document.createElement('ul');
@@ -48,4 +48,4 @@ function addMofang(num){
 }
 addMofang(number);
 }
-initMofang('wrap',10,50,40,5,60);
+initMofang('wrap',10,50,40,10,60);
