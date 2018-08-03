@@ -25,9 +25,18 @@ header{
 	background: #fff;
 	user-select: none;
 }
+footer{
+	width: 100%;
+	background: rgba(180,180,180,.5);
+	padding:10px 0;
+	min-height: 100px;
+	text-align: center;	
+}
 #canvas{
 	z-index: -1;
 }
+
+
 	.loginAlertArea{
 		position: fixed;
 		top:0;

@@ -13,20 +13,23 @@ let postContent=document.getElementById('postContent'),
 		"content":null
 	},
 	xhrUrl='http://182.254.230.88:8080';
+	postContent.innerHTML="输入正文...";
 postContent.onfocus=edit;
 postContent.onblur=noedit;
 function edit(){
+	console.log(postContent.innerHTML);
 	if(postContent.innerHTML=="输入正文..."){
+		console.log(postContent.innerHTML);
 		postContent.innerHTML="";
 		postContent.style="color:#444";
 	}
 }
 function noedit(){
 	if(!postContent.innerHTML){
-		postContent.innerHTML="输入正文..."
+		postContent.innerHTML="输入正文...";
 		postContent.style="color:#aaa";
 	}
-}
+	}
 	navList.addEventListener('click',function(e){
 	let target=e.target;
 	switch(target.classList[1]){
