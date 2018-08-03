@@ -17,9 +17,7 @@ let postContent=document.getElementById('postContent'),
 postContent.onfocus=edit;
 postContent.onblur=noedit;
 function edit(){
-	console.log(postContent.innerHTML);
 	if(postContent.innerHTML=="输入正文..."){
-		console.log(postContent.innerHTML);
 		postContent.innerHTML="";
 		postContent.style="color:#444";
 	}
