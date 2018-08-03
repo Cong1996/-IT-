@@ -36,7 +36,8 @@ mofang.prototype={
 				case 4:style+=`transform:rotateX(90deg) translateZ(${this.w/2}px);`;break;
 				case 5:style+=`transform:rotateX(90deg) translateZ(${-this.w/2}px);`
 			}
-			li+=`<li style="${style}"></li>`
+			li+=`<li style="${style}"></li>`;
+		
 		}
 		this.ul.innerHTML=li;
 	}

@@ -25,13 +25,6 @@ header{
 	background: #fff;
 	user-select: none;
 }
-footer{
-	width: 100%;
-	background: rgba(180,180,180,.5);
-	padding:10px 0;
-	min-height: 100px;
-	text-align: center;	
-}
 #canvas{
 	z-index: -1;
 }
@@ -232,6 +225,7 @@ footer{
 			border:.5px solid #ddd;
 			display: inline-block;
 			background:rgba(0,108,255,0);
+			text-align: center;
 		}
 		@keyframes turnTop{
 			100%{
@@ -362,6 +356,17 @@ input[type="button"]{
 .otherArea{
 	margin-left:720px;
 	margin-top:20px;
+}
+.aboutUs{
+	width: 100%;
+	background: #fff;
+	min-height: 150px;
+	text-align: center;	
+}
+.aboutUsContent{
+	text-align: left;
+	letter-spacing: .2em;
+	padding: 10px;
 }
 .noticeArea{
 	cursor:pointer;
