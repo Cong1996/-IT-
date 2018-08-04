@@ -404,7 +404,7 @@ function showCommont(commontArray){
 					let time=getTime(i['create_time']);
 					str=`
 						<li>
-							
+							<img src=${xhrUrl+i['user_img']} width="40px">
 							<div class="commont-user-area">
 								<span class="commont-user-name">${i['u_name']}</span>
 								<span class=commont-time>${time}</span>
@@ -412,7 +412,7 @@ function showCommont(commontArray){
 							</div>
 						</li>
 						`;
-		// <img src=${xhrUrl+JSON.parse(xhr.responseText)['userinfo']['user_img']} width="40px">
+		// 
 		showCommontArea.innerHTML+=str;
 	
 	}	
