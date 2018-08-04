@@ -444,7 +444,7 @@ function getArticleContent(){
 				document.getElementById('articleCreateTime').innerHTML=JSON.parse(xhr.responseText)['note']['create_time'];
 				document.getElementById('articleTitle').innerHTML=JSON.parse(xhr.responseText)['note']['note_title'];
 				getPosterMessage(JSON.parse(xhr.responseText)['note']['poster_id']);
-				showCommont(JSON.parse(xhr.responseText)['comment']);
+				getCommontList();
 				document.getElementById('posterLink').href="personal.html?"+JSON.parse(xhr.responseText)['note']['poster_id'];
 				document.getElementById('authorLink').href="personal.html?"+JSON.parse(xhr.responseText)['note']['poster_id'];
 				getCollection();
@@ -452,7 +452,20 @@ function getArticleContent(){
 		}
 	}
 }
-
+function getCommontList(){
+	let xhr=new XMLHttpRequest();
+	xhr.open('post',xhrUrl+'/se52/viewNote.do',true);
+	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xhr.send('noteId='+window.location.href.split('?')[1].split('#')[0]);
+	xhr.onreadystatechange=function(){
+		if(xhr.readyState==4){
+			if(xhr.status==200){
+				let str=JSON.parse(xhr.responseText)['content'];			
+				showCommont(JSON.parse(xhr.responseText)['comment']);
+			}
+		}
+	}
+}
 /*评论功能*/
 
 /*发表评论*/
@@ -467,7 +480,8 @@ function sendCommontXhr(content,noteid,user_id,user_name){
 		if(xhr.readyState==4){
 			if(xhr.status==200){
 				if(JSON.parse(xhr.responseText)['addflag']){
-					window.location.href="";
+					document.getElementById('yourCommont').value="";
+					getCommontList();
 				}
 				else{
 					coolAlert('网络错误');
@@ -477,7 +491,7 @@ function sendCommontXhr(content,noteid,user_id,user_name){
 	}
 }
 function sendCommont(){
-	let userId=localStorage.getItem('nowUserId');
+	let userId=localStorage.nowUserId;
 	if(userId){
 		let yourCommont=document.getElementById('yourCommont');
 		if(yourCommont.value.length<1){
