@@ -134,7 +134,6 @@ function sendArticle(){
 		data;
 	xhr.open('post',xhrUrl+'/se52/note/add.do',true);
 	article['content']= encodeURIComponent(article['content']);
-	console.log(article['content']);
 	data=Serialize(article,'content');
 	xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded"); 		
 	xhr.send(data);
@@ -143,7 +142,7 @@ function sendArticle(){
 					if(xhr.status==200){
 						if(JSON.parse(xhr.responseText)['message']=='发布成功'){
 							alert('发布成功');
-							window.location.href="index.html";
+							window.location.href="article.html?"+JSON.parse(xhr.responseText)['note_id'];
 						}
 						else{
 							coolAlert('发布失败');

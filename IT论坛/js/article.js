@@ -400,18 +400,11 @@ function showCommont(commontArray){
 	if(commontArray.length!=0){
 		showCommontArea.innerHTML="";
 	for(let i of commontArray){
-		let xhr=new XMLHttpRequest();
-		xhr.open('post',xhrUrl+'/se52/user/check.do',true);
-		xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-		xhr.send("id="+i['u_id']);
-		xhr.onreadystatechange=function(){
-			if(xhr.readyState==4){
-				if(xhr.status==200){
-				i['content']= i['content'];
+					i['content']= i['content'];
 					let time=getTime(i['create_time']);
 					str=`
 						<li>
-							<img src=${xhrUrl+JSON.parse(xhr.responseText)['userinfo']['user_img']} width="40px">
+							
 							<div class="commont-user-area">
 								<span class="commont-user-name">${i['u_name']}</span>
 								<span class=commont-time>${time}</span>
@@ -419,10 +412,9 @@ function showCommont(commontArray){
 							</div>
 						</li>
 						`;
-					showCommontArea.innerHTML+=str;
-				}
-			}
-		}
+		// <img src=${xhrUrl+JSON.parse(xhr.responseText)['userinfo']['user_img']} width="40px">
+		showCommontArea.innerHTML+=str;
+	
 	}	
 	}
 	
@@ -459,7 +451,7 @@ function getCommontList(){
 	xhr.send('noteId='+window.location.href.split('?')[1].split('#')[0]);
 	xhr.onreadystatechange=function(){
 		if(xhr.readyState==4){
-			if(xhr.status==200){
+			if(xhr.status==200){ 
 				let str=JSON.parse(xhr.responseText)['content'];			
 				showCommont(JSON.parse(xhr.responseText)['comment']);
 			}
