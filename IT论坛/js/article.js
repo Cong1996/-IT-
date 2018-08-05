@@ -315,6 +315,7 @@ function getUserPhoto(){
 				let userJson=(JSON.parse(xhr.responseText));
 				document.getElementById("userPhoto").src=xhrUrl+userJson['userinfo']['user_img'];
 				document.getElementById("commontUserPhoto").src=xhrUrl+userJson['userinfo']['user_img'];
+				document.getElementById("userPhoto").parentNode.href="personal.html?"+localStorage.nowUserId;
 				userId=userJson['userinfo']['user_id'];
 				userName=userJson['userinfo']['user_name'];
 			}
@@ -404,7 +405,7 @@ function showCommont(commontArray){
 					let time=getTime(i['create_time']);
 					str=`
 						<li>
-							<img src=${xhrUrl+i['user_img']} width="40px">
+							<a href="personal.html?${i['u_id']}"><img src=${xhrUrl+i['user_img']} width="40px" height="40px"></a>
 							<div class="commont-user-area">
 								<span class="commont-user-name">${i['u_name']}</span>
 								<span class=commont-time>${time}</span>

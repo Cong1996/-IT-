@@ -49,4 +49,4 @@ function addMofang(num){
 }
 addMofang(number);
 }
-initMofang('wrap',10,50,40,10,60);
+initMofang('wrap',10,50,40,15,60);

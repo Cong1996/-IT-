@@ -228,7 +228,7 @@
 .personalShowArea>nav .active::after{
 	position: absolute;
 	content:'';
-	width: 100px;
+	width: 100%;
 	height: 2px;
 	bottom:0;
 	left:0;

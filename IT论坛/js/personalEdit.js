@@ -562,7 +562,8 @@ function deleteSome(type,f_id,s_id){/*删除文章，评论，收藏*/
 			url=xhrUrl+'/se52/note/delete.do';
 			data="note_id="+f_id;
 		}
-		let xhr=new XMLHttpRequest();
+		let xhr=new XMLHttpRequest(),
+			thisLi=event.target.parentNode.parentNode;
 		xhr.open('post',url,true);
 		xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 		xhr.send(data);
@@ -570,7 +571,21 @@ function deleteSome(type,f_id,s_id){/*删除文章，评论，收藏*/
 			if(xhr.readyState==4){
 				if(xhr.status==200){
 					if(JSON.parse(xhr.responseText)['message']){
-						window.location.href="";
+							let parentUl=thisLi.parentNode;
+						thisLi.parentNode.removeChild(thisLi);
+						if(!parentUl.getElementsByTagName('li').length){
+							parentUl.innerHTML=`
+								<li>
+									<div class="doSomethingTitle">
+													<span class="Something">发布了文章</span>
+													<span class="timeOfDoSomething"></span>
+											</div>	
+											<div class="doSomethingContent">
+												<a>暂无</a>
+											</div>
+								</li>
+							`
+						}
 					}
 					else{
 						coolAlert('删除失败');
