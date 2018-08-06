@@ -318,6 +318,7 @@ input[type='text']{
 	resize:none;
 	border:none;
 	color:#aaa;
+	white-space: pre-wrap;
 }
 .postContent code{
 	padding:10px;
