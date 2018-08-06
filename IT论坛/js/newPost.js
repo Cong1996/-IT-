@@ -53,7 +53,7 @@ function changeStyle(style){
 			document.execCommand('ForeColor',false,'#000');
 			break;
 		case 'code':
-			postContent.innerHTML+=`<code contentEditable='true'>输入代码</code>
+			postContent.innerHTML+=`<code contentEditable='true'></code>
 									<span class="newPage" contentEditable='true'></span>`
 			break;
 		case 'quote':
