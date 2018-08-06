@@ -491,6 +491,7 @@ function deleteMessage(message_id,dom){
 				if(xhr.status==200){
 					userJson=(JSON.parse(xhr.responseText));
 					fixedTool.classList.remove('disappear');
+					document.getElementById('navItemPerson').href="personal.html?"+localStorage.nowUserId;
 					document.getElementById("navUserPhoto").src=xhrUrl+(JSON.parse(xhr.responseText))['userinfo']['user_img'];
 				}
 			}
