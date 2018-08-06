@@ -231,6 +231,7 @@ input[type='text']{
 	border:1px solid #ddd;
 	padding: 20px;
 	color:#999;
+	z-index:999;
 	}
 .selectType>li{
 	display: inline-block;
