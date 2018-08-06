@@ -44,8 +44,22 @@
 	.article-body-area{
 		min-height: 100px;
 		padding:10px 0;
-		white-space: wrap;
+		white-space: pre-wrap;
 		overflow: hidden;
+	}
+	.article-body-area img{
+		max-width: 100%;
+	}
+	.article-body-area table,tr, td{
+		white-space: wrap;
+		word-wrap: break-word;
+		overflow: auto;
+		margin:0 auto;
+		max-width:600px;
+	}
+	.article-body-area code{
+		white-space: pre-wrap;
+		display: block;
 	}
 	.article-body-area pre{
 		width: 100%;
