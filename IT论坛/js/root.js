@@ -31,5 +31,5 @@ function coolAlert(str){
 }
 function exitRoot(){
 	delete localStorage.superRoot;
-	window.location.href="backLogin.html";
+	window.location.href="backlogin.html";
 }
