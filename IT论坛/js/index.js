@@ -131,6 +131,23 @@ function searchNote(value){
 	xhr.onreadystatechange=function(){
 		if(xhr.readyState==4){
 			if(xhr.status==200){
+				if(JSON.parse(xhr.responseText)['list'].length!=0)
+				showHotArticleAll(JSON.parse(xhr.responseText)['list']);
+				else{
+					searchNoteByPoster(value);
+				}
+			}
+		}
+	}
+}
+function searchNoteByPoster(value){
+	let xhr=new XMLHttpRequest();
+	xhr.open('post',xhrUrl+'/se52/note/findByPosterName.do',true);
+	xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+	xhr.send('user_name='+value);
+	xhr.onreadystatechange=function(){
+		if(xhr.readyState==4){
+			if(xhr.status==200){
 				showHotArticleAll(JSON.parse(xhr.responseText)['list']);
 			}
 		}

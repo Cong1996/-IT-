@@ -17,10 +17,14 @@
 		</div>
 		<h1>帖子管理</h1>
 		<div class="post-search">
-				<input type='text' placeholder="输入帖子关键字">
-				<button>
+				<input id="searchPost" type='text' placeholder="输入帖子关键字">
+				<button id="searchPostButton">
 					<span class="fa fa-search"></span>
 				</button>
+				<div style="font-size:16px;vertical-align: middle;line-height: 20px">
+					<input type="radio" value="根据帖子名" name="searchBy" checked>根据帖子名
+					<input type="radio" value="更加作者名" name="searchBy">根据作者名
+				</div>
 		</div>
 		<div class="resultShowArea">
 			<ul id="postList" class="post-table">
